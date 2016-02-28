@@ -14,14 +14,14 @@ namespace MyLibrary.Collections
 
         internal Coordinate _limit;
         internal List<Coordinate> _locked;
-        internal Dictionary<string, Coordinate> _award;
+        //da implementare in main Dictionary<string, Coordinate> _award; <==stava anche nel costruttore
         internal List<string> _directions;
 
         private MyChessBoard() { }
         public MyChessBoard(Coordinate start, Coordinate arrive, Coordinate limit,
-         List<Coordinate> locked, Dictionary<string, Coordinate> award, List<string> directions):this()
+         List<Coordinate> locked, List<string> directions):this()
         {
-            _start = start; _arrive = arrive; _limit = limit; _locked = locked; _award = award; _directions = directions;
+            _start = start; _arrive = arrive; _limit = limit; _locked = locked; _directions = directions;
         }
 
         public IEnumerator<List<Coordinate>> GetEnumerator()
@@ -218,6 +218,10 @@ namespace MyLibrary.Collections
         {
             var obj1 = (Coordinate)obj;
             return this.x == obj1.x && this.y == obj1.y;
+        }
+        public override string ToString()
+        {
+            return $"[{x},{y}]";
         }
 
         #region IEqualityCmparer

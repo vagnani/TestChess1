@@ -35,6 +35,22 @@ namespace TestChessBoard
             Console.WriteLine("Inserire coordinate premi");
             Console.WriteLine("Usare seguente formalismo: (x,y,value) <== parentesi obbligatorie");
             var awards = Adding.CreateAwards(Console.ReadLine());
+
+            MyChessBoard chess = new MyChessBoard
+                (
+                start,arrive,limit,locked,awards,directions
+                );      
+            
+            foreach(var list in chess)
+            {
+                //my implementation
+                string toprint = "";
+                foreach (var node in list)
+                {
+                    toprint += node.ToString();
+                }
+                Console.WriteLine(toprint);
+            }
         }
     }
 }
