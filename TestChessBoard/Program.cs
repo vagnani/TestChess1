@@ -38,7 +38,7 @@ namespace TestChessBoard
 
             MyChessBoard chess = new MyChessBoard
                 (
-                start,arrive,limit,locked,awards,directions
+                start,arrive,limit,locked,directions
                 );      
             
             foreach(var list in chess)
@@ -51,6 +51,14 @@ namespace TestChessBoard
                 }
                 Console.WriteLine(toprint);
             }
+
+            Console.ReadKey();
         }
     }
 }
+
+//(1,1)
+//(8,8)
+//(1,5)(3,8)(4,7)(6,2)
+//(nne)(ene)(ese)(sse)
+//(4,6,10)(7,4,15)(3,1,5)

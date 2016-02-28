@@ -36,15 +36,14 @@ namespace MyLibrary.Collections
 
     public class MyEnumerator : IEnumerator<List<Coordinate>>
     {
-        private int index = -1;
-        private List<List<Coordinate>> _listMax;
-        private List<List<Coordinate>> final;
+        private int index = 0;
+        private List<List<Coordinate>> _listMax=new List<List<Coordinate>>();
+        private List<List<Coordinate>> final=new List<List<Coordinate>>();
         private MyChessBoard chess;
-
-        public MyEnumerator() { }
-        public MyEnumerator(MyChessBoard chess) : this()
+        
+        public MyEnumerator(MyChessBoard chess) 
         {
-            this.chess = chess;
+            this.chess = chess; 
             _listMax.Add(new List<Coordinate>() { chess._start });
             SetAll(chess._start, new List<Coordinate>() { chess._start }, 0);
         }
