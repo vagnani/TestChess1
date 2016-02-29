@@ -62,5 +62,5 @@ namespace TestChessBoard
 //(8,8)
 //(8,8)
 //(1,5)(3,8)(4,7)(6,2)
-//(nne)(ene)(ese)(sse)
+//(nne)(ene)(ese)(sse) o (nno)(ono)(oso)(sso)
 //(4,6,10)(7,4,15)(3,1,5)
