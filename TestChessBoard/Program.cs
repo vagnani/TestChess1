@@ -15,11 +15,11 @@ namespace TestChessBoard
             Console.WriteLine("Inserire coordinate inizio");
             Console.WriteLine("Usare seguente formalismo: (x,y) <== parentesi obbligatorie");
             var start = Adding.CreateCoordinateByString(Console.ReadLine());
-            
+
             Console.WriteLine("Inserire coordinate arrivo");
             Console.WriteLine("Usare seguente formalismo: (x,y) <== parentesi obbligatorie");
             var arrive = Adding.CreateCoordinateByString(Console.ReadLine());
-            
+
             Console.WriteLine("Inserire coordinate limiti campo");
             Console.WriteLine("Usare seguente formalismo: (x,y) <== parentesi obbligatorie");
             var limit = Adding.CreateCoordinateByString(Console.ReadLine());
@@ -32,16 +32,16 @@ namespace TestChessBoard
             Console.WriteLine("Usare seguente formalismo: (...) <== parentesi obbligatorie");
             var directions = Adding.CreateDirections(Console.ReadLine());
 
-            Console.WriteLine("Inserire coordinate premi");
-            Console.WriteLine("Usare seguente formalismo: (x,y,value) <== parentesi obbligatorie");
-            var awards = Adding.CreateAwards(Console.ReadLine());
+            //Console.WriteLine("Inserire coordinate premi");
+            //Console.WriteLine("Usare seguente formalismo: (x,y,value) <== parentesi obbligatorie");
+            //var awards = Adding.CreateAwards(Console.ReadLine());
 
             MyChessBoard chess = new MyChessBoard
                 (
-                start,arrive,limit,locked,directions
-                );      
-            
-            foreach(var list in chess)
+                start, arrive, limit, locked, directions
+                );
+
+            foreach (var list in chess)
             {
                 //my implementation
                 string toprint = "";
@@ -52,12 +52,14 @@ namespace TestChessBoard
                 Console.WriteLine(toprint);
             }
 
-            Console.ReadKey();
+        Console.ReadLine();
         }
     }
 }
 
+//Esempio:
 //(1,1)
+//(8,8)
 //(8,8)
 //(1,5)(3,8)(4,7)(6,2)
 //(nne)(ene)(ese)(sse)

@@ -19,7 +19,7 @@ namespace MyLibrary.Collections
 
         private MyChessBoard() { }
         public MyChessBoard(Coordinate start, Coordinate arrive, Coordinate limit,
-         List<Coordinate> locked, List<string> directions):this()
+         List<Coordinate> locked, List<string> directions) : this()
         {
             _start = start; _arrive = arrive; _limit = limit; _locked = locked; _directions = directions;
         }
@@ -31,28 +31,40 @@ namespace MyLibrary.Collections
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
-        }        
+        }
     }
 
     public class MyEnumerator : IEnumerator<List<Coordinate>>
     {
-        private int index = 0;
-        private List<List<Coordinate>> _listMax=new List<List<Coordinate>>();
-        private List<List<Coordinate>> final=new List<List<Coordinate>>();
+        private int index = -1;
+        private List<List<Coordinate>> _listMax = new List<List<Coordinate>>();
+        private List<List<Coordinate>> final = new List<List<Coordinate>>();
         private MyChessBoard chess;
-        
-        public MyEnumerator(MyChessBoard chess) 
+
+        public MyEnumerator(MyChessBoard chess)
         {
-            this.chess = chess; 
+            this.chess = chess;
             _listMax.Add(new List<Coordinate>() { chess._start });
             SetAll(chess._start, new List<Coordinate>() { chess._start }, 0);
+            CheckTheRight();
+        }
+
+        private void CheckTheRight()
+        {
+            foreach(var element in _listMax)
+            {
+                if (element[element.Count - 1].Equals(chess._arrive))
+                    final.Add(element);
+            }
         }
 
         public List<Coordinate> Current
         {
             get
             {
-                return final[index];
+                if (index < final.Count)
+                { return final[index]; }
+                throw new ArgumentOutOfRangeException();
             }
         }
         object IEnumerator.Current
@@ -65,13 +77,12 @@ namespace MyLibrary.Collections
 
         public bool MoveNext()
         {
-            if (index >= final.Count)
+            if (index < final.Count-1)
             {
-                return false;
+                index++;
+                return true;
             }
-
-            index++;
-            return true;
+            return false;
         }
 
         private void SetAll(Coordinate _first, List<Coordinate> locked, int index)
@@ -84,10 +95,10 @@ namespace MyLibrary.Collections
                 List<Coordinate> copyLocked = CopyFrom(locked);
                 var possibleCoordinate = MoveByDirection(nodePossible, _first);
 
-                if (possibleCoordinate < chess._limit &&
+                if (possibleCoordinate.x <= chess._limit.x && possibleCoordinate.y <= chess._limit.y &&
                     !chess._locked.Contains(possibleCoordinate, possibleCoordinate) &&
                     !locked.Contains(possibleCoordinate, possibleCoordinate) &&
-                    possibleCoordinate.x>0 && possibleCoordinate.y > 0)
+                    possibleCoordinate.x > 0 && possibleCoordinate.y > 0)
                 {
                     if (copyIndex != index)
                     {
@@ -211,7 +222,7 @@ namespace MyLibrary.Collections
         {
             this.x = x;
             this.y = y;
-        }        
+        }
 
         public override bool Equals(object obj)
         {
@@ -314,7 +325,7 @@ namespace MyLibrary.Collections
         {
             char excluded1 = '(';
             char excluded2 = ')';
-            char excluded3 = ',';            
+            char excluded3 = ',';
             List<List<string>> lockedString = new List<List<string>>();
             List<Coordinate> locked = new List<Coordinate>();
 
@@ -340,14 +351,14 @@ namespace MyLibrary.Collections
 
                     if (str[index] == excluded2)
                     {
-                        temp.Add(name);                        
+                        temp.Add(name);
                         break;
                     }
                     lockedString.Add(temp);
                 }
             }
 
-            foreach(var element in lockedString)
+            foreach (var element in lockedString)
             {
                 var x = Convert.ToInt32(element[0]);
                 var y = Convert.ToInt32(element[1]);
@@ -366,12 +377,12 @@ namespace MyLibrary.Collections
             str.Trim();
 
             for (int index = 0; index < str.Count(); index++)
-            {                
+            {
                 //if (str[index] == excluded1)                
                 string name = "";
                 for (; index < str.Count(); index++)
                 {
-                    if (str[index] != excluded1 && str[index] != excluded2 ) //exception
+                    if (str[index] != excluded1 && str[index] != excluded2) //exception
                     {
                         name += str[index];
                     }
@@ -380,7 +391,7 @@ namespace MyLibrary.Collections
                     {
                         directions.Add(name);
                         break;
-                    }                    
+                    }
                 }
             }
             return directions;
@@ -430,7 +441,7 @@ namespace MyLibrary.Collections
             {
                 int x = Convert.ToInt32(item[1]);
                 int y = Convert.ToInt32(item[2]);
-                finalAll.Add(item[0],new Coordinate(x, y));
+                finalAll.Add(item[0], new Coordinate(x, y));
             }
             return finalAll;
         }
