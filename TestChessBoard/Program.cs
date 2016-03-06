@@ -55,22 +55,22 @@ namespace TestChessBoard
                     var compulsaryNode = Adding.CreateLockedCells(Console.ReadLine());
 
                     foreach (var list in chess)
-                    {
-                        bool listAdded = false;
+                    {                        
+                        int index = 0;
                         foreach (var element in list)
                         {
                             foreach (var MustNode in compulsaryNode)
                             {
                                 if (element.Equals(MustNode))
                                 {
-                                    nodeFiltered.Add(list); listAdded = true; ; break;
+                                    index++; ; break;
                                 }
                             }
+                        }
 
-                            if(listAdded)
-                            {
-                                break;
-                            }
+                        if(index==compulsaryNode.Count)
+                        {
+                            nodeFiltered.Add(list);
                         }
                     }
 
