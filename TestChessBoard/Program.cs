@@ -11,27 +11,35 @@ namespace TestChessBoard
     {
         static void Main()
         {
-            Console.WriteLine("Risoluzione problema scacchi");
-            Console.WriteLine("Inserire coordinate inizio");
-            Console.WriteLine("Usare seguente formalismo: (x,y) <== parentesi obbligatorie");
-            var start = Adding.CreateCoordinateByString(Console.ReadLine());
-
-            Console.WriteLine("Inserire coordinate arrivo");
-            Console.WriteLine("Usare seguente formalismo: (x,y) <== parentesi obbligatorie");
-            var arrive = Adding.CreateCoordinateByString(Console.ReadLine());
-
             Console.WriteLine("Inserire coordinate limiti campo");
             Console.WriteLine("Usare seguente formalismo: (x,y) <== parentesi obbligatorie");
             var limit = Adding.CreateCoordinateByString(Console.ReadLine());
+            //var limit = Adding.CreateCoordinateByString("(8,8)");
+
+            Console.WriteLine("Risoluzione problema scacchi");
+            Console.WriteLine("Inserire coordinate della posizione di inizio");
+            Console.WriteLine("Usare seguente formalismo: (x,y) <== parentesi obbligatorie");
+            var start = Adding.CreateCoordinateByString(Console.ReadLine());
+            //var start = Adding.CreateCoordinateByString("(1,1)");
+
+            Console.WriteLine("Inserire coordinate della posizione di arrivo");
+            Console.WriteLine("Usare seguente formalismo: (x,y) <== parentesi obbligatorie");
+            var arrive = Adding.CreateCoordinateByString(Console.ReadLine());
+            //var arrive = Adding.CreateCoordinateByString("(8,8)");            
 
             Console.WriteLine("Inserire coordinate celle bloccate");
             Console.WriteLine("Usare seguente formalismo: (x,y) <== parentesi obbligatorie");
             var locked = Adding.CreateLockedCells(Console.ReadLine());
+            //var locked = Adding.CreateLockedCells("(3,1)(4,4)(4,5)(4,8)(5,2)(5,3)(7,4)(7,5)");
 
             Console.WriteLine("Inserire direzioni consentite: seguendo la rosa dei venti");
-            Console.WriteLine("Direzioni possibili:(nne)(ene)(ese)(sse) o (nno)(ono)(oso)(sso)");
+            Console.WriteLine("Direzioni possibili:(nne)(ene)(ese)(sse)(nno)(ono)(oso)(sso)");
             Console.WriteLine("Usare seguente formalismo: (...) <== parentesi obbligatorie");
             var directions = Adding.CreateDirections(Console.ReadLine());
+            Console.WriteLine();
+            Console.WriteLine("Possibili percorsi:");
+            Console.WriteLine();
+            //var directions = Adding.CreateDirections("(ono)(nno)(nne)(ene)");
 
             //Console.WriteLine("Inserire coordinate premi");
             //Console.WriteLine("Usare seguente formalismo: (x,y,value) <== parentesi obbligatorie");
@@ -42,71 +50,19 @@ namespace TestChessBoard
                 start, arrive, limit, locked, directions
                 );
 
-            do
+
+            Console.WriteLine();
+            foreach (var list in chess)
             {
-                Console.WriteLine("passante per qualche nodo?");
-                string str = Console.ReadLine().Trim();
-
-                if (str != "no")
+                string toprint = "";
+                foreach (var node in list)
                 {
-                    List<List<Coordinate>> nodeFiltered = new List<List<Coordinate>>();
-                    Console.WriteLine("Inserire coordinate da passare");
-                    Console.WriteLine("Usare seguente formalismo: (x,y) <== parentesi obbligatorie");
-                    var compulsaryNode = Adding.CreateLockedCells(Console.ReadLine());
-
-                    foreach (var list in chess)
-                    {                        
-                        int index = 0;
-                        foreach (var element in list)
-                        {
-                            foreach (var MustNode in compulsaryNode)
-                            {
-                                if (element.Equals(MustNode))
-                                {
-                                    index++; ; break;
-                                }
-                            }
-                        }
-
-                        if(index==compulsaryNode.Count)
-                        {
-                            nodeFiltered.Add(list);
-                        }
-                    }
-
-                    foreach (var list in nodeFiltered)
-                    {
-                        string toprint = "";
-                        foreach (var node in list)
-                        {
-                            toprint += node.ToString();
-                        }
-                        Console.WriteLine(toprint);
-                    }
+                    toprint += node.ToString();
                 }
+                Console.WriteLine(toprint);
+            }
 
-                else
-                {
-                    foreach (var list in chess)
-                    {
-                        string toprint = "";
-                        foreach (var node in list)
-                        {
-                            toprint += node.ToString();
-                        }
-                        Console.WriteLine(toprint);
-                    }
-                }
-
-                Console.WriteLine("Vuoi continuare?");
-                string toContinue = Console.ReadLine();
-                if (toContinue == "no")
-                {
-                    break;
-                }
-            } while (true);
-
-        Console.ReadLine();
+            Console.ReadLine();
         }
     }
 }

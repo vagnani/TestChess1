@@ -38,7 +38,7 @@ namespace MyLibrary.Collections
     {
         private int index = -1;
         private List<List<Coordinate>> _listMax = new List<List<Coordinate>>();
-        private List<List<Coordinate>> final = new List<List<Coordinate>>();
+        public List<List<Coordinate>> final = new List<List<Coordinate>>();
         private MyChessBoard chess;
 
         public MyEnumerator(MyChessBoard chess)
@@ -85,31 +85,35 @@ namespace MyLibrary.Collections
             return false;
         }
 
-        private void SetAll(Coordinate _first, List<Coordinate> locked, int index)
+        private void SetAll(Coordinate first, List<Coordinate> locked, int index)
         {
             var copyListMax = CopyFrom(_listMax[index]);
             int copyIndex = index;
 
-            foreach (var nodePossible in chess._directions)
+            //if insicuro--da controllare meglio
+            if (first.Equals(chess._limit)==false)
             {
-                List<Coordinate> copyLocked = CopyFrom(locked);
-                var possibleCoordinate = MoveByDirection(nodePossible, _first);
-
-                if (possibleCoordinate.x <= chess._limit.x && possibleCoordinate.y <= chess._limit.y &&
-                    !chess._locked.Contains(possibleCoordinate, possibleCoordinate) &&
-                    !locked.Contains(possibleCoordinate, possibleCoordinate) &&
-                    possibleCoordinate.x > 0 && possibleCoordinate.y > 0)
+                foreach (var nodePossible in chess._directions)
                 {
-                    if (copyIndex != index)
-                    {
-                        _listMax.Add(new List<Coordinate>(copyListMax));
-                        copyIndex = _listMax.Count - 1;
-                    }
+                    var possibleCoordinate = MoveByDirection(nodePossible, first);
 
-                    _listMax[copyIndex].Add(possibleCoordinate);
-                    copyLocked.Add(possibleCoordinate);
-                    SetAll(possibleCoordinate, copyLocked, copyIndex);
-                    index++;
+                    if (possibleCoordinate.x <= chess._limit.x && possibleCoordinate.y <= chess._limit.y &&
+                        chess._locked.Contains(possibleCoordinate, possibleCoordinate) == false &&
+                        locked.Contains(possibleCoordinate, possibleCoordinate) == false &&
+                        possibleCoordinate.x > 0 && possibleCoordinate.y > 0)
+                    {
+                        List<Coordinate> copyLocked = CopyFrom(locked);
+                        if (copyIndex != index)
+                        {
+                            _listMax.Add(CopyFrom(copyListMax));
+                            copyIndex = _listMax.Count - 1;
+                        }
+
+                        _listMax[copyIndex].Add(possibleCoordinate);
+                        copyLocked.Add(possibleCoordinate);
+                        SetAll(possibleCoordinate, copyLocked, copyIndex);
+                        index++;
+                    }
                 }
             }
         }
