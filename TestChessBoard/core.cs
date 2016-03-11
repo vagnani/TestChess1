@@ -112,7 +112,7 @@ namespace MyLibrary.Collections
                         _listMax[copyIndex].Add(possibleCoordinate);
                         copyLocked.Add(possibleCoordinate);
                         SetAll(possibleCoordinate, copyLocked, copyIndex);
-                        index++;
+                        index=-1;
                     }
                 }
             }
