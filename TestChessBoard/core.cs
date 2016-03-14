@@ -13,8 +13,7 @@ namespace MyLibrary.Collections
         internal Coordinate _arrive;
 
         internal Coordinate _limit;
-        internal List<Coordinate> _locked;
-        //da implementare in main Dictionary<string, Coordinate> _award; <==stava anche nel costruttore
+        internal List<Coordinate> _locked;        
         internal List<string> _directions;
 
         private MyChessBoard() { }
@@ -47,16 +46,7 @@ namespace MyLibrary.Collections
             _listMax.Add(new List<Coordinate>() { chess._start });
             SetAll(chess._start, new List<Coordinate>() { chess._start }, 0);
             CheckTheRight();
-        }
-
-        private void CheckTheRight()
-        {
-            foreach(var element in _listMax)
-            {
-                if (element[element.Count - 1].Equals(chess._arrive))
-                    final.Add(element);
-            }
-        }
+        }        
 
         public List<Coordinate> Current
         {
@@ -84,40 +74,42 @@ namespace MyLibrary.Collections
             }
             return false;
         }
-
-        private void SetAll(Coordinate first, List<Coordinate> locked, int index)
+        
+        //principio di funzionamento: accodare gli altri elementi
+        private void SetAll(Coordinate first, List<Coordinate> locked, int index) 
         {
             var copyListMax = CopyFrom(_listMax[index]);
             int copyIndex = index;
 
-            //if insicuro--da controllare meglio
-            if (first.Equals(chess._limit)==false)
+            foreach (var nodePossible in chess._directions)
             {
-                foreach (var nodePossible in chess._directions)
+                //in base alle direzioni possibli creo un realtivo oggetto modificando le coordinate 
+                var possibleCoordinate = MoveInDirection(nodePossible, first);
+
+                //verifico se le nuove coordinate sono maggiori di 0, minori o uguali ai limiti del campo
+                //e se le sue coordinate non sono le stesse di una cella interdetta o gia fatta/passata
+                if (possibleCoordinate.x <= chess._limit.x && possibleCoordinate.y <= chess._limit.y &&
+                    chess._locked.Contains(possibleCoordinate, possibleCoordinate) == false &&
+                    locked.Contains(possibleCoordinate, possibleCoordinate) == false &&
+                    possibleCoordinate.x > 0 && possibleCoordinate.y > 0)
                 {
-                    var possibleCoordinate = MoveByDirection(nodePossible, first);
+                    List<Coordinate> copyLocked = CopyFrom(locked);
 
-                    if (possibleCoordinate.x <= chess._limit.x && possibleCoordinate.y <= chess._limit.y &&
-                        chess._locked.Contains(possibleCoordinate, possibleCoordinate) == false &&
-                        locked.Contains(possibleCoordinate, possibleCoordinate) == false &&
-                        possibleCoordinate.x > 0 && possibleCoordinate.y > 0)
+                    if (copyIndex != index)
                     {
-                        List<Coordinate> copyLocked = CopyFrom(locked);
-                        if (copyIndex != index)
-                        {
-                            _listMax.Add(CopyFrom(copyListMax));
-                            copyIndex = _listMax.Count - 1;
-                        }
-
-                        _listMax[copyIndex].Add(possibleCoordinate);
-                        copyLocked.Add(possibleCoordinate);
-                        SetAll(possibleCoordinate, copyLocked, copyIndex);
-                        index=-1;
+                        _listMax.Add(CopyFrom(copyListMax));
+                        copyIndex = _listMax.Count - 1;
                     }
+
+                    _listMax[copyIndex].Add(possibleCoordinate);
+                    copyLocked.Add(possibleCoordinate);
+                    SetAll(possibleCoordinate, copyLocked, copyIndex);
+                    index = -1;
                 }
             }
         }
-        private Coordinate MoveByDirection(string direction, Coordinate coor)
+        //metodi utili 
+        private Coordinate MoveInDirection(string direction, Coordinate coor)
         {
             #region est 
             if (direction == "nne")
@@ -174,7 +166,17 @@ namespace MyLibrary.Collections
             }
             return result;
         }
+        //controlla se le coordinate dell'ultimo oggetto di ogni lista siano uguali alle coordinate di arrivo
+        private void CheckTheRight()
+        {
+            foreach (var element in _listMax)
+            {
+                if (element[element.Count - 1].Equals(chess._arrive))
+                    final.Add(element);
+            }
+        }
 
+        //il resto da supporto per il foreach
         public void Reset()
         {
             index = -1;
@@ -289,6 +291,7 @@ namespace MyLibrary.Collections
         #endregion
     }
 
+    //oggetto che trasforma le stringhe in oggetti utilizzabili da un oggetto chess
     public static class Adding
     {
         public static Coordinate CreateCoordinateByString(string str)
