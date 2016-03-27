@@ -360,9 +360,9 @@ namespace MyLibrary.Collections
                     {
                         temp.Add(name);
                         break;
-                    }
-                    lockedString.Add(temp);
+                    }                    
                 }
+                lockedString.Add(temp);
             }
 
             foreach (var element in lockedString)
@@ -404,13 +404,13 @@ namespace MyLibrary.Collections
             return directions;
         }
 
-        public static Dictionary<string, Coordinate> CreateAwards(string str)
+        public static Dictionary<Coordinate, int> CreateAwards(string str)
         {
             char excluded1 = '(';
             char excluded2 = ')';
             char excluded3 = ',';
             List<List<string>> all = new List<List<string>>();
-            Dictionary<string, Coordinate> finalAll = new Dictionary<string, Coordinate>();
+            Dictionary<Coordinate, int> finalAll = new Dictionary<Coordinate, int>();
 
             str.Trim();
 
@@ -446,9 +446,10 @@ namespace MyLibrary.Collections
 
             foreach (var item in all)
             {
-                int x = Convert.ToInt32(item[1]);
-                int y = Convert.ToInt32(item[2]);
-                finalAll.Add(item[0], new Coordinate(x, y));
+                int x = Convert.ToInt32(item[0]);
+                int y = Convert.ToInt32(item[1]);
+                int value = Convert.ToInt32(item[2]);
+                finalAll.Add(new Coordinate(x, y),value);
             }
             return finalAll;
         }
